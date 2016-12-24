@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gx.dao.UserMapping">
+    <select id="selectUserList" resultType="com.gx.model.User">
+        SELECT * FROM  user
+    </select>
+    <select id="selectUser" resultType="com.gx.model.User">
+        SELECT * FROM  user WHERE  userName=#{userName} and userPassword=#{passWord}
+    </select>
+    <select id="selectUserById" resultType="com.gx.model.User">
+        SELECT * FROM  user WHERE  userId=#{uid}
+    </select>
+</mapper>
+
