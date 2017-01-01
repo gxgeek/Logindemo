@@ -256,5 +256,20 @@
 
   <build>
     <finalName>Logindemo</finalName>
+    <plugins>
+    <plugin>
+      <groupId>org.apache.tomcat.maven</groupId>
+      <artifactId>tomcat7-maven-plugin</artifactId>
+      <version>2.2</version>
+      <configuration>
+        <!--<url>http://103.56.63.139:880/manager/text</url>-->
+        <url>http://localhost:8080/manager/text</url>
+        <username>admin</username>
+        <password>admin</password>
+        <server>tomcat</server>
+        <path>/</path>
+      </configuration>
+    </plugin>
+</plugins>
   </build>
 </project>

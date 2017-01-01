@@ -39,6 +39,17 @@
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
 
+  <!--过滤用户权限-->
+  <filter>
+    <filter-name>PermissionsFilter</filter-name>
+    <filter-class>com.gx.filter.PermissionsFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>PermissionsFilter</filter-name>
+    <url-pattern>/user/member/*</url-pattern>
+  </filter-mapping>
+
+
   <!-- 激活Tomcat的defaultServlet来处理静态文件 -->
   <servlet-mapping>
     <servlet-name>default</servlet-name>
@@ -67,11 +78,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>springmvc</servlet-name>
-    <url-pattern>/</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>springmvc</servlet-name>
-    <url-pattern>*.html</url-pattern>
+    <url-pattern>/*</url-pattern>
   </servlet-mapping>
 
 </web-app>

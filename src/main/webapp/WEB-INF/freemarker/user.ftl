@@ -6,7 +6,7 @@
     <body>
        <p> 欢迎</p>
 
-        <p>ID：${(User.userName)!}</p>
-        <p>姓名：${(User.userName) !}</p>
+        <p>ID：${(Session.user.userName)!}</p>
+        <p>姓名：${(Session.user.userName) !}</p>
     </body>
 </html>

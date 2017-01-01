@@ -1,9 +1,12 @@
 package com.gx.model;
 
+
+import java.io.Serializable;
+
 /**
  * Created by gx on 2016/12/22.
  */
-public class User {
+public class User  implements Serializable{
     private Integer userId;
     private String userName;
     private String userPassWord;

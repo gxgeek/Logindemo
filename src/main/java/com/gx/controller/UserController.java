@@ -6,16 +6,20 @@ import com.gx.until.DateUtil;
 import org.apache.http.HttpRequest;
 import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
+import org.springframework.orm.hibernate5.SpringJtaSessionContext;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.xml.crypto.Data;
 import java.util.List;
 
@@ -35,42 +39,44 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/login")
-    public String Login() {
+    public String login() {
         return  "login";
     }
+
+    /**
+     * 跳转错误页面
+     * @return
+     */
+    @RequestMapping(value = "/error")
+    public String error() {
+        return  "error";
+    }
+
+
+
+
 
     /**
      * 验证表单数据
      * @return
      */
-    @RequestMapping(value = "/info")
-    public String findUse(String userName , String passWord,String isLogin ,ModelMap map, HttpServletRequest req, HttpServletResponse rsp) {
-        //如果有isLogin 就是直接过来的
-        if (isLogin==null){
-            Cookie []cookies = req.getCookies();
-            for (Cookie ck: cookies){
-                if ("userToken".equals(ck.getName())){
-                    String uid = ck.getValue().split(":")[0];
-                    User user = userService.findUseById(uid);
-                    map.put("User",user);
-                    return "user";
-                }
-            }
-            return  "error";
-        }else {  //判断登录数据是否有效
-            User user =userService.findUse(userName,passWord);
-            if (user==null){
-                map.put("msg","用户名密码错误");
-                return "login";
-            }
-            map.put("User",user);
-            String token = user.getUserId()+":"+ DateUtil.getTimeLong();
-            Cookie userToken = new Cookie("userToken",token);
-            userToken.setMaxAge(1200);
-            userToken.setPath("/");
-            rsp.addCookie(userToken);
-            return  "user";
+    @RequestMapping(value = "/verification")
+    public String findUse(String userName , String passWord, String isLogin, HttpServletRequest req, HttpServletResponse rsp, ModelMap map, RedirectAttributes attr, Model model) {
+        User user =userService.findUse(userName,passWord);
+         if (user==null){
+            attr.addAttribute("msg","用户名密码错误");
+            return "redirect:/user/login";
         }
+        HttpSession session = req.getSession();
+        session.setAttribute("user",user);
+        map.put("User",session.getAttribute("user"));
+        return  "redirect:/user/member/info";
     }
+
+    @RequestMapping(value = "/member/info")
+    public String info() {
+        return  "user";
+    }
+
 
 }
